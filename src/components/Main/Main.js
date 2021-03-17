@@ -8,7 +8,11 @@ function Main() {
     MAIN: 'main'
   };
 
-  const TABLE_HEADERS = [['id', 'Id'], ['nameEN', 'Film Title'], ['duration', 'Duration']];
+  const TABLE_HEADERS = [
+    ['id', 'Id'],
+    ['nameEN', 'Film Title'],
+    ['duration', 'Duration']
+  ];
 
   return (
     <main

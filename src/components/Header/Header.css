@@ -11,10 +11,17 @@
   padding: 10px;
   box-sizing: border-box;
   border-bottom: 2px solid #000000;
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: 'Montserrat';
   font-weight: 700;
   font-style: normal;
   font-size: 22px;
   line-height: 1.25;
   text-align: center;
+}
+
+
+@media screen and (max-width: 424px) {
+  .header {
+    padding: 10px;
+  }
 }
