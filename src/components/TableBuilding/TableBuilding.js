@@ -8,6 +8,8 @@ function TableBuilding({ children, data, headers }) {
   const DATA_PROPERTY_INDEX = 0;
   const DATA_TITLE_INDEX = 1;
 
+  const [filteredData, setFilteredData] = React.useState([]);
+
   const [dataToRender, setDataToRender] = React.useState([]);
 
   const [currenPage, setCurrentPage] = React.useState(1);
@@ -19,11 +21,25 @@ function TableBuilding({ children, data, headers }) {
   const [tableBodyMarkup, setTableBodyMarkup] = React.useState(null);
   const [value, setValue] = React.useState('');
 
+  const getKeysForFiltering = () => headers.map(elem => elem[DATA_PROPERTY_INDEX]);
+
+  const filterDataByKeys = (data, filtersKeys) => data.map((obj) => {
+    const result = {};
+    Object.keys(obj).forEach((key) => {
+      filtersKeys.forEach((filterKey) => {
+        if (key === filterKey) {
+          result[key] = obj[key];
+        }
+      })
+    })
+    return result;
+  })
+
   const searchFilter = (searchQuery, data) => {
     const filterKeyword = (item) => {
       return JSON.stringify(item).toLowerCase().includes(searchQuery.toLowerCase())
     }
-    return data.filter(filterKeyword);
+    return data.filter(item => filterKeyword(item));
   }
 
   const handleSubmit = (evt) => {
@@ -35,7 +51,7 @@ function TableBuilding({ children, data, headers }) {
     const value = target.value;
 
     setValue(value);
-    setDataToRender(searchFilter(value, data));
+    setDataToRender(searchFilter(value, filteredData));
     setTableBodyMarkup(getTableBodyMarkup(dataToRender))
   };
 
@@ -72,10 +88,20 @@ function TableBuilding({ children, data, headers }) {
   ));
 
   React.useEffect(() => {
-    const foundData = searchFilter(value, data);
+    if (data) {
+      const filterKeys = getKeysForFiltering();
+      setFilteredData(filterDataByKeys(data, filterKeys));
+    }
+  }, [data])
 
-    setTableBodyMarkup(getTableBodyMarkup(foundData));
-  }, [value, data, getTableBodyMarkup])
+  React.useEffect(() => {
+    if (filteredData.length > 0) {
+      console.log(filteredData)
+      const foundData = searchFilter(value, filteredData);
+      setTableBodyMarkup(getTableBodyMarkup(foundData));
+    }
+
+  }, [value, filteredData, getTableBodyMarkup])
 
   return (
     <div>
