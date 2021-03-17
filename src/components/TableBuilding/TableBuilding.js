@@ -1,27 +1,73 @@
 import React, { createContext, useContext } from 'react';
 import uuid from 'react-uuid';
 
+const useSortableData = (items, config = null) => {
+  const [sortConfig, setSortConfig] = React.useState(config);
+
+  const sortedItems = React.useMemo(() => {
+    const sortableItems = [...items];
+
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        };
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        };
+        return 0;
+      });
+    };
+    return sortableItems;
+  }, [items, sortConfig])
+
+  const requestSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+
+    setSortConfig({ key, direction });
+  }
+  return { items: sortedItems, requestSort, sortConfig };
+};
+
 const tableBuildingContext = createContext();
 
 function TableBuilding({ children, data, headers }) {
-
   const DATA_PROPERTY_INDEX = 0;
   const DATA_TITLE_INDEX = 1;
 
   const [filteredData, setFilteredData] = React.useState([]);
 
-  const [dataToRender, setDataToRender] = React.useState([]);
+  const [dataToRender, setDataToRender] = React.useState(data);
 
-  const [currenPage, setCurrentPage] = React.useState(1);
-  const [itemsPerPage] = React.useState(50);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [itemsPerPage] = React.useState(30);
 
-  const indexOfLastItem = currenPage * itemsPerPage;
+  const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const [totalPageNumber, setTotalPageNumber] = React.useState(0)
 
   const [tableBodyMarkup, setTableBodyMarkup] = React.useState(null);
   const [value, setValue] = React.useState('');
 
-  const getKeysForFiltering = () => headers.map(elem => elem[DATA_PROPERTY_INDEX]);
+  const getTotalPageNumber = React.useCallback(() => Math.ceil(dataToRender.length / itemsPerPage), [dataToRender.length, itemsPerPage]);
+
+  const getKeysForFiltering = React.useCallback(() => headers.map(elem => elem[DATA_PROPERTY_INDEX]), [headers]);
+
+  const {
+    items,
+    requestSort,
+    sortConfig,
+  } = useSortableData(filteredData);
+
+  const getKeyFor = (key) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === key ? sortConfig.direction : undefined;
+  };
 
   const filterDataByKeys = (data, filtersKeys) => data.map((obj) => {
     const result = {};
@@ -77,13 +123,24 @@ function TableBuilding({ children, data, headers }) {
         </tr>
       )
     })
-  }, [headers, indexOfLastItem, indexOfFirstItem])
+  }, [headers, indexOfLastItem, indexOfFirstItem]);
 
-  const tableHeaderMarkup = headers.map((header) => (
+  const handleSortBtnClick = (key) => {
+    console.log(key)
+    requestSort(key);
+    setTableBodyMarkup(getTableBodyMarkup(items));
+  }
+
+  const tableHeaderMarkup = headers.map((header, index) => (
     <th
       key={uuid()}
     >
-      {header[DATA_TITLE_INDEX]}
+      <button
+        className={getKeyFor(header[DATA_PROPERTY_INDEX])}
+        onClick={() => handleSortBtnClick(header[DATA_PROPERTY_INDEX])}
+      >
+        {header[DATA_TITLE_INDEX]}
+      </button>
     </th>
   ));
 
@@ -92,16 +149,19 @@ function TableBuilding({ children, data, headers }) {
       const filterKeys = getKeysForFiltering();
       setFilteredData(filterDataByKeys(data, filterKeys));
     }
-  }, [data])
+  }, [data, getKeysForFiltering])
 
   React.useEffect(() => {
     if (filteredData.length > 0) {
-      console.log(filteredData)
       const foundData = searchFilter(value, filteredData);
       setTableBodyMarkup(getTableBodyMarkup(foundData));
+      setTotalPageNumber(getTotalPageNumber());
     }
+  }, [value, filteredData, getTableBodyMarkup, getTotalPageNumber])
 
-  }, [value, filteredData, getTableBodyMarkup])
+  React.useEffect(() => {
+    setTableBodyMarkup(getTableBodyMarkup(items));
+  }, [items, getTableBodyMarkup])
 
   return (
     <div>
@@ -117,7 +177,7 @@ function TableBuilding({ children, data, headers }) {
           />
         </label>
       </form>
-      <tableBuildingContext.Provider value={{ data, itemsPerPage, paginate }}>
+      <tableBuildingContext.Provider value={{ totalPageNumber, paginate }}>
         {children}
       </tableBuildingContext.Provider>
       <table>
@@ -135,13 +195,13 @@ function TableBuilding({ children, data, headers }) {
 }
 
 TableBuilding.Pagination = function TableBuildingPagination() {
-  const { data, itemsPerPage, paginate } = useContext(tableBuildingContext);
+  const { totalPageNumber, paginate } = useContext(tableBuildingContext);
 
-  const pageNumbers = [];
+  const pageNumbers = []
 
-  for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
+  for (let i = 1; i <= totalPageNumber; i++) {
     pageNumbers.push(i);
-  };
+  }
 
   return (
     <nav>
