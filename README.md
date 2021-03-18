@@ -10,6 +10,105 @@
 
 > Фильтрация: компонент предоставляет текстовое поле, в которое пользователь может ввести текст и строки таблицы, данные которых не содержат подстроку, введённую пользователем, скрываются. Перефильтрация осуществляется на каждое изменение значения поля.
 
+### Установка:
+
+```
+git clone https://github.com/MelnikovAleksei/test-table-building.git
+
+cd test-table-building
+
+npm install
+
+npm start
+```
+
+### Описание работы компонента **TableBuilding**:
+
+Компонент **TableBuilding** принимает данные для отображения в таблице в виде массива с объектами и двумерный массив для отображения конкретных данных, где под индексом **0** указан ключ для объекта с данными и под индексом **1** указан текст заголовка дляотображения в таблице.
+
+Пример данных фильмов для отображения в таблице:
+
+```
+
+[
+  {
+    "id": 1,
+    "nameEN": "Stones in Exile",
+    "director": "Стивен Кайак ",
+    "country": "США",
+    "year": "2010",
+    "duration": 61
+  },
+  {
+    "id": 2,
+    "nameEN": "All Tomorrow's Parties",
+    "director": " Джонатан Кауэтт",
+    "country": "Великобритания",
+    "year": "2009",
+    "duration": 82,
+  }
+]
+
+```
+
+Пример двумерного массива для отображения конкретных данных из объекта с данными:
+
+```
+
+const TABLE_HEADERS = [
+  ['id', 'Id'],
+  ['nameEN', 'Film Title'],
+  ['duration', 'Duration']
+];
+
+```
+
+```
+
+Пример использования:
+
+```
+import React from 'react'
+import TableBuilding from './TableBuilding';
+
+function App () {
+
+  const TABLE_HEADERS = [
+    ['id', 'Id'],
+    ['nameEN', 'Film Title'],
+    ['duration', 'Duration']
+  ];
+
+  const MOVIES_DATA = [
+    {
+      "id": 1,
+      "nameEN": "Stones in Exile",
+      "director": "Стивен Кайак ",
+      "country": "США",
+      "year": "2010",
+      "duration": 61
+    },
+    {
+      "id": 2,
+      "nameEN": "All Tomorrow's Parties",
+      "director": " Джонатан Кауэтт",
+      "country": "Великобритания",
+      "year": "2009",
+      "duration": 82,
+    }
+  ]
+
+  return (
+    <div className="App">
+      <TableBuilding data={MOVIES_DATA} headers={TABLE_HEADERS}>
+        <TableBuilding.Pagination />
+      </TableBuilding>
+    </div>
+  )
+}
+
+```
+
 ### Используемые технологии:
 
 * Reactjs
@@ -18,7 +117,7 @@
 
 ### Планируемые доработки:
 
-> Сортировка по столбцам: при нажатии на название столбца строки таблицы сортируются по возрастанию, при повторном клике - по убыванию.
+* оптимизация работы приложения
 
 ### Используемые библиотеки:
 
