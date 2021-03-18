@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/mesto-react/static/css/main.7a8b7732.chunk.css",
+    "main.js": "/mesto-react/static/js/main.b53d2c35.chunk.js",
+    "main.js.map": "/mesto-react/static/js/main.b53d2c35.chunk.js.map",
+    "runtime-main.js": "/mesto-react/static/js/runtime-main.f7c5fc2e.js",
+    "runtime-main.js.map": "/mesto-react/static/js/runtime-main.f7c5fc2e.js.map",
+    "static/js/2.1e393b26.chunk.js": "/mesto-react/static/js/2.1e393b26.chunk.js",
+    "static/js/2.1e393b26.chunk.js.map": "/mesto-react/static/js/2.1e393b26.chunk.js.map",
+    "index.html": "/mesto-react/index.html",
+    "static/css/main.7a8b7732.chunk.css.map": "/mesto-react/static/css/main.7a8b7732.chunk.css.map",
+    "static/js/2.1e393b26.chunk.js.LICENSE.txt": "/mesto-react/static/js/2.1e393b26.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/mesto-react/static/media/ProstoOne-Regular.610865bf.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f7c5fc2e.js",
+    "static/js/2.1e393b26.chunk.js",
+    "static/css/main.7a8b7732.chunk.css",
+    "static/js/main.b53d2c35.chunk.js"
+  ]
+}
