@@ -65,11 +65,10 @@ const TABLE_HEADERS = [
 
 ```
 
-```
-
 Пример использования:
 
 ```
+
 import React from 'react'
 import TableBuilding from './TableBuilding';
 
