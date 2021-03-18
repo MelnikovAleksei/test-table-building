@@ -1,5 +1,7 @@
 # Тестовое задание для [Crazy Panda](https://crazypanda.ru/) на позицию Junior Front-end разработчик
 
+[Ссылка на деплой на Github-pages](https://melnikovaleksei.github.io/test-table-building/)
+
 ## Задание:
 
 > Необходимо разработать javascript-компонент для построения таблицы с дополнительными возможностями для пользователя.
@@ -122,3 +124,6 @@ function App () {
 ### Используемые библиотеки:
 
 * [react-uuid](https://www.npmjs.com/package/react-uuid)
+* [gh-pages](https://www.npmjs.com/package/gh-pages)
+
+Special thanks to [Brad Traversy](https://github.com/bradtraversy) for a tutorial on pagination and [Abdul Basit](https://github.com/AbdulBasit313) for a tutorial on custom dynamic tables.
