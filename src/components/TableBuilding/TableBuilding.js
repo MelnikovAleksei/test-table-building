@@ -253,7 +253,7 @@ TableBuilding.Pagination = function TableBuildingPagination() {
           >
             <a
               className={TABLE_NAV_STYLE_SETTINGS.tableListLink}
-              href='!#'
+              href='#'
               onClick={() => paginate(number)}
             >
               {number}
