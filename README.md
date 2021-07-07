@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+# Тестовое задание для [Crazy Panda](https://crazypanda.ru/) на позицию Junior Front-end разработчик
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Ссылка на деплой на Github-pages](https://melnikovaleksei.github.io/test-table-building/)
 
-## Available Scripts
+## Задание:
 
-In the project directory, you can run:
+> Необходимо разработать javascript-компонент для построения таблицы с дополнительными возможностями для пользователя.
 
-### `yarn start`
+> Функционал: Клиентская пагинация: данные необходимо отображать постранично, максимум 50 элементов на страницу, необходимо предоставить пользовательскую навигацию для перехода по страницам.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> Сортировка по столбцам: при нажатии на название столбца строки таблицы сортируются по возрастанию, при повторном клике - по убыванию.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> Фильтрация: компонент предоставляет текстовое поле, в которое пользователь может ввести текст и строки таблицы, данные которых не содержат подстроку, введённую пользователем, скрываются. Перефильтрация осуществляется на каждое изменение значения поля.
 
-### `yarn test`
+### Установка:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+git clone https://github.com/MelnikovAleksei/test-table-building.git
 
-### `yarn build`
+cd test-table-building
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Описание работы компонента **TableBuilding**:
 
-### `yarn eject`
+Компонент **TableBuilding** принимает данные для отображения в таблице в виде массива с объектами и двумерный массив для отображения конкретных данных, где под индексом **0** указан ключ для объекта с данными и под индексом **1** указан текст заголовка дляотображения в таблице.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Пример данных фильмов для отображения в таблице:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+[
+  {
+    "id": 1,
+    "nameEN": "Stones in Exile",
+    "director": "Стивен Кайак ",
+    "country": "США",
+    "year": "2010",
+    "duration": 61
+  },
+  {
+    "id": 2,
+    "nameEN": "All Tomorrow's Parties",
+    "director": " Джонатан Кауэтт",
+    "country": "Великобритания",
+    "year": "2009",
+    "duration": 82,
+  }
+]
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
 
-## Learn More
+Пример двумерного массива для отображения конкретных данных из объекта с данными:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const TABLE_HEADERS = [
+  ['id', 'Id'],
+  ['nameEN', 'Film Title'],
+  ['duration', 'Duration']
+];
 
-### Code Splitting
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Пример использования:
 
-### Analyzing the Bundle Size
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+import React from 'react'
+import TableBuilding from './TableBuilding';
 
-### Making a Progressive Web App
+function App () {
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  const TABLE_HEADERS = [
+    ['id', 'Id'],
+    ['nameEN', 'Film Title'],
+    ['duration', 'Duration']
+  ];
 
-### Advanced Configuration
+  const MOVIES_DATA = [
+    {
+      "id": 1,
+      "nameEN": "Stones in Exile",
+      "director": "Стивен Кайак ",
+      "country": "США",
+      "year": "2010",
+      "duration": 61
+    },
+    {
+      "id": 2,
+      "nameEN": "All Tomorrow's Parties",
+      "director": " Джонатан Кауэтт",
+      "country": "Великобритания",
+      "year": "2009",
+      "duration": 82,
+    }
+  ]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+  return (
+    <div className="App">
+      <TableBuilding data={MOVIES_DATA} headers={TABLE_HEADERS}>
+        <TableBuilding.Pagination />
+      </TableBuilding>
+    </div>
+  )
+}
 
-### Deployment
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Используемые технологии:
 
-### `yarn build` fails to minify
+* Reactjs
+* CSS
+* HTML
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Планируемые доработки:
+
+* оптимизация работы приложения
+
+### Используемые библиотеки:
+
+* [react-uuid](https://www.npmjs.com/package/react-uuid)
+* [gh-pages](https://www.npmjs.com/package/gh-pages)
+
+Special thanks to [Brad Traversy](https://github.com/bradtraversy) for a tutorial on pagination and [Abdul Basit](https://github.com/AbdulBasit313) for a tutorial on custom dynamic tables.
